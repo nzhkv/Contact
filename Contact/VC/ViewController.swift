@@ -83,7 +83,7 @@ extension ViewController: UITableViewDataSource {
     
 }
 
-extension ViewController: UITextViewDelegate {
+extension ViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let actionDelete = UIContextualAction(style: .destructive, title: "Delete") { _,_,_ in
             self.contacts.remove(at: indexPath.row)
