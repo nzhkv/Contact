@@ -9,11 +9,42 @@ import UIKit
 
 class ViewController: UIViewController {
     
-    private var contacts: [ContactProtocol] = []
-
+    private var contacts: [ContactProtocol] = [] {
+        didSet {
+            contacts.sort { $0.title < $1.title }
+        }
+    }
+    
+    @IBOutlet var tableView: UITableView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         loadContacts()
+    }
+    
+    @IBAction func showNewContactAlerrt() {
+        let alertController = UIAlertController(title: "Create new contact", message: "Input name and number", preferredStyle: .alert)  //check words
+        alertController.addTextField { textField in
+            textField.placeholder = "Name"
+        }
+        alertController.addTextField { textField in
+            textField.placeholder = "Number"
+        }
+        
+        let createButton = UIAlertAction(title: "Create", style: .default) { _ in
+            guard let contactName = alertController.textFields?[0].text,
+                  let contactPhone = alertController.textFields?[1].text else { return }
+            let contact = Contact(title: contactName, phone: contactPhone)
+            self.contacts.append(contact)
+            self.tableView.reloadData()
+        }
+        
+        let cancelButton = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        
+        alertController.addAction(cancelButton)
+        alertController.addAction(createButton)
+        
+        present(alertController, animated: true)
     }
 }
 
@@ -46,8 +77,12 @@ extension ViewController: UITableViewDataSource {
         contacts.append(Contact(title: "Саня Техосмотр", phone: "+799912312323"))
         contacts.append(Contact(title: "Владимир Анатольевич", phone: "+781213342321"))
         contacts.append(Contact(title: "Сильвестр", phone: "+7000911112"))
-        contacts.sort{ $0.title < $1.title }
     }
     
 }
+
+// page 171
+//extension ViewController: UITextViewDelegate {
+//    tableView(<#T##UITableView#>, trailingSwipeActionsConfigurationForRowAt: <#T##IndexPath#>)
+//}
 
