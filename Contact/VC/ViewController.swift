@@ -9,6 +9,7 @@ import UIKit
 
 class ViewController: UIViewController {
     
+    var userDefaults = UserDefaults.standard
     private var contacts: [ContactProtocol] = [] {
         didSet {
             contacts.sort { $0.title < $1.title }
@@ -20,6 +21,7 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         loadContacts()
+        userDefaults.set("Some random text", forKey: "Some key")
     }
     
     @IBAction func showNewContactAlerrt() {
